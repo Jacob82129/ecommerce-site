@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
+import { useDispatch } from "react-redux";
+
+import { signUpStart } from "../../store/user/user.action";
+
+// import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input";
 import Button from "../button/button";
 import './sign-up-form.scss'
@@ -16,6 +20,7 @@ const SignUpForm = () => {
 
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { displayName, email, password, confirmPassword } = formFields;
+    const dispatch = useDispatch();
 
     // as long as user context value changes, this will re-run
     // prevents sign up form from being re-rendered when user context value changes
@@ -37,9 +42,10 @@ const SignUpForm = () => {
         }
 
         try {
-            const { user } = await createAuthUserWithEmailAndPassword(email, password);
+            // const { user } = await createAuthUserWithEmailAndPassword(email, password);
             
-            await createUserDocumentFromAuth(user, { displayName });
+            // await createUserDocumentFromAuth(user, { displayName });
+            dispatch(signUpStart(email, password, displayName));
             resetFormFields();
             
         } catch (error) {
